@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <!-- <script src="script.js"></script> -->
 </head>
 
 <body>
@@ -72,34 +72,15 @@
         </div>
     </div>
 
-    <!-- <div class="row">
-        <div class="detail">
-            <div class="text">
-                <p style="height: 24px;font-size: 16px;"><strong>Lượng Ni tơ trong đất hiện tại:</strong> <span
-                        id="Nitrogen"></span> mg/Kg</p>
-            </div>
-            <div class="chart">
-                <canvas id="canvasnito"></canvas>
-            </div>
-        </div>
-        <div class="detail">
-            <div class="text">
-                <p style="height: 24px;font-size: 16px;"><strong>Lượng Phốt pho trong đất hiện tại:</strong> <span
-                        id="Phosphorus"></span> mg/Kg</p>
-            </div>
-            <div class="chart">
-                <canvas id="canvasphotpho"></canvas>
-            </div>
-        </div>
-    </div> -->
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
         async function fetchData() {
             try {
-                const response = await fetch('/api/data');
+                const response = await fetch('/api/data/fetch');
                 if (!response.ok) {
+                    console.log('not ok');
                     throw new Error(`Failed to fetch data. Status: ${response.status}`);
                 }
 
@@ -113,22 +94,23 @@
                 let displayedRows = data.slice(-5);
 
                 displayedRows.forEach(entry => {
+                    console.log(entry.Humi);
 
                     // document.getElementById("LPG").innerHTML = entry.humidity;
-                    document.getElementById("CH4").innerHTML = entry.temperature;
+                    document.getElementById("CH4").innerHTML = entry.Temp;
                     // document.getElementById("Time-LPG").innerHTML = entry.timestamp
-                    document.getElementById("Time-CH4").innerHTML = entry.timestamp;
+                    document.getElementById("Time-CH4").innerHTML = entry.Timestamp;
                     // console.log(entry.timestamp);
                     const row = document.createElement('tr');
 
                     const timeCell = document.createElement('td');
-                    timeCell.textContent = entry.timestamp;
+                    timeCell.textContent = entry.Timestamp;
 
                     const humidityCell = document.createElement('td');
-                    humidityCell.textContent = entry.humidity;
+                    humidityCell.textContent = entry.Humi;
 
                     const temperatureCell = document.createElement('td');
-                    temperatureCell.textContent = entry.temperature;
+                    temperatureCell.textContent = entry.Temp;
 
                     row.appendChild(timeCell);
                     row.appendChild(humidityCell);
@@ -146,7 +128,6 @@
         setInterval(() => { fetchData() }, 500);
 
 
-        setInterval(() => { fetchData() }, 500);
 
         let myChartNito;
         let chartDataNito = [];

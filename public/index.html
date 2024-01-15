@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <div>
+        <div id="bar-b">%pin</div>
+        <div id="bar-w"></div>
+    </div>
+    <div class="row">
+        <div class="row">
+            <div id="CH4-details">
+                <p>Giá trị CH4:</p>
+                <span id="CH4"></span>
+                <p>Đọc lần cuối tại:</p>
+                <span id="Time-CH4"></span>
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>temp</th>
+                            <th>humi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataBody">
+                    </tbody>
+                </table>
+                <div class="detail">
+                    <div class="text">
+                        <p style="height: 24px;font-size: 16px;"><strong>Lượng Ni tơ trong đất hiện tại:</strong> <span
+                                id="Nitrogen"></span> mg/Kg</p>
+                    </div>
+                    <div class="chart">
+                        <canvas id="canvasnito"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div id="LPG-details">
+                <p>Giá trị LPG:</p>
+                <span id="LPG"></span>
+                <p>Đọc lần cuối tại:</p>
+                <span id="Time-LPG"></span>
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>temp</th>
+                            <th>humi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataBody">
+                    </tbody>
+                </table>
+                <div class="detail">
+                    <div class="text">
+                        <p style="height: 24px;font-size: 16px;"><strong>Lượng Ni tơ trong đất hiện tại:</strong> <span
+                                id="Nitrogen"></span> mg/Kg</p>
+                    </div>
+                    <div class="chart">
+                        <canvas id="canvasnito"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- <div class="row">
+        <div class="detail">
+            <div class="text">
+                <p style="height: 24px;font-size: 16px;"><strong>Lượng Ni tơ trong đất hiện tại:</strong> <span
+                        id="Nitrogen"></span> mg/Kg</p>
+            </div>
+            <div class="chart">
+                <canvas id="canvasnito"></canvas>
+            </div>
+        </div>
+        <div class="detail">
+            <div class="text">
+                <p style="height: 24px;font-size: 16px;"><strong>Lượng Phốt pho trong đất hiện tại:</strong> <span
+                        id="Phosphorus"></span> mg/Kg</p>
+            </div>
+            <div class="chart">
+                <canvas id="canvasphotpho"></canvas>
+            </div>
+        </div>
+    </div> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch('http://localhost:3000/api/data');
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch data. Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const dataBody = document.getElementById('dataBody');
+
+                // Clear existing rows
+                dataBody.innerHTML = '';
+
+                // Keep track of displayed rows
+                let displayedRows = data.slice(-5);
+
+                displayedRows.forEach(entry => {
+
+                    // document.getElementById("LPG").innerHTML = entry.humidity;
+                    document.getElementById("CH4").innerHTML = entry.temperature;
+                    // document.getElementById("Time-LPG").innerHTML = entry.timestamp
+                    document.getElementById("Time-CH4").innerHTML = entry.timestamp;
+                    // console.log(entry.timestamp);
+                    const row = document.createElement('tr');
+
+                    const timeCell = document.createElement('td');
+                    timeCell.textContent = entry.timestamp;
+
+                    const humidityCell = document.createElement('td');
+                    humidityCell.textContent = entry.humidity;
+
+                    const temperatureCell = document.createElement('td');
+                    temperatureCell.textContent = entry.temperature;
+
+                    row.appendChild(timeCell);
+                    row.appendChild(humidityCell);
+                    row.appendChild(temperatureCell);
+
+                    // Append new row to the top of the table
+                    dataBody.insertBefore(row, dataBody.firstChild);
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error.message);
+            }
+        }
+
+        // Fetch data every 500 milliseconds
+        setInterval(() => { fetchData() }, 500);
+
+
+        setInterval(() => { fetchData() }, 500);
+
+        let myChartNito;
+        let chartDataNito = [];
+        let myChartPhotpho;
+        let chartDataPhotpho = [];
+
+
+        myChartNito = new Chart('canvasnito', {
+            type: 'line',
+            data: {
+                labels: [1, 2, 3, 4, 5, 6],
+                datasets: [{
+                    label: 'My Data',
+                    data: [0, 27, 10, 8, 11],
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+
+        });
+        const canvasphotpho = document.getElementById('canvasphotpho');
+        new Chart(canvasphotpho, {
+            type: 'line',
+            data: {
+                labels: [1, 2, 3, 4, 5, 6],
+                datasets: [{
+                    label: 'My Data',
+                    data: [0, 12, 19, 3, 5, 4],
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+
+        });
+
+        const ctx = document.getElementById('canvas');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: 'Biểu đồ nhiệt độ',
+                    data: [12, 19, 3, 50, 4, 5],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

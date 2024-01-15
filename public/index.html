@@ -98,7 +98,7 @@
     <script>
         async function fetchData() {
             try {
-                const response = await fetch('http://localhost:3000/api/data');
+                const response = await fetch('/api/data');
                 if (!response.ok) {
                     throw new Error(`Failed to fetch data. Status: ${response.status}`);
                 }

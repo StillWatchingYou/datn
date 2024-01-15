@@ -33,7 +33,8 @@
                 </table>
                 <div class="detail">
                     <div class="text">
-                        <p style="height: 24px;font-size: 16px;"><strong>Chỉ số CH4</strong> <span id="Nitrogen"></span>
+                        <p style="height: 24px;font-size: 16px;"><strong>Chỉ số CH4</strong> <span
+                                id="CH4-chart"></span>
                         </p>
                     </div>
                     <div class="chart">
@@ -58,7 +59,8 @@
                 </table>
                 <div class="detail">
                     <div class="text">
-                        <p style="height: 24px;font-size: 16px;"><strong>Chỉ số LPG</strong> <span id="Nitrogen"></span>
+                        <p style="height: 24px;font-size: 16px;"><strong>Chỉ số LPG</strong> <span
+                                id="LPG-chart"></span>
                         </p>
                     </div>
                     <div class="chart">
@@ -74,7 +76,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-
+        function changeWidth(myElement, newWidth) {
+            myElement.style.width = newWidth + 'px';
+        }
         let chartDataCH4 = [];
         let chartDataLPG = [];
 
@@ -94,22 +98,27 @@
                 // Keep track of displayed rows
                 let displayedRows = data.slice(-5);
                 // document.getElementById("LPG").innerHTML = entry.humidity;
-                document.getElementById("CH4").innerHTML = data[0].Temp;
+                document.getElementById("CH4").innerHTML = data[0].Concern;
                 // document.getElementById("Time-LPG").innerHTML = entry.timestamp
-                document.getElementById("Time-CH4").innerHTML = data[0].Timestamp;
+                document.getElementById("Time-CH4").innerHTML = data[0].Time;
                 // console.log(entry.timestamp);
+                const Pin = document.getElementById('bar-b');
+                let pinwidth = data[0].Pin * 2;
+                console.log(data[0].Pin);
+                changeWidth(Pin, pinwidth);
                 displayedRows.forEach(entry => {
+
                     const row = document.createElement('tr');
 
                     const timeCell = document.createElement('td');
-                    timeCell.textContent = entry.Timestamp;
+                    timeCell.textContent = entry.Time;
 
-                    const temperatureCell = document.createElement('td');
-                    temperatureCell.textContent = entry.Temp;
+                    const concernCell = document.createElement('td');
+                    concernCell.textContent = entry.Concern;
 
                     row.appendChild(timeCell);
-                    row.appendChild(temperatureCell);
-                    chartDataCH4.unshift(entry.Temp);
+                    row.appendChild(concernCell);
+                    chartDataCH4.unshift(entry.Concern);
 
                     // Nếu mảng có hơn 5 phần tử, loại bỏ phần tử cuối cùng
                     if (chartDataCH4.length > 5) {
@@ -147,23 +156,25 @@
                 let displayedRows = data.slice(-5);
 
                 // document.getElementById("LPG").innerHTML = entry.humidity;
-                document.getElementById("LPG").innerHTML = data[0].Temp;
+                document.getElementById("LPG").innerHTML = data[0].Concern;
                 // document.getElementById("Time-LPG").innerHTML = entry.timestamp
-                document.getElementById("Time-LPG").innerHTML = data[0].Timestamp;
-
+                document.getElementById("Time-LPG").innerHTML = data[0].Time;
+                let pinwidth = data[0].Pin * 2;
+                console.log(data[0].Pin);
+                changeWidth(Pin, pinwidth);
                 // console.log(entry.timestamp);
                 displayedRows.forEach(entry => {
                     const row = document.createElement('tr');
 
                     const timeCell = document.createElement('td');
-                    timeCell.textContent = entry.Timestamp;
+                    timeCell.textContent = entry.Time;
 
-                    const temperatureCell = document.createElement('td');
-                    temperatureCell.textContent = entry.Temp;
+                    const concernCell = document.createElement('td');
+                    concernCell.textContent = entry.Concern;
 
                     row.appendChild(timeCell);
-                    row.appendChild(temperatureCell);
-                    chartDataLPG.unshift(entry.Temp);
+                    row.appendChild(concernCell);
+                    chartDataLPG.unshift(entry.Concern);
 
                     // Nếu mảng có hơn 5 phần tử, loại bỏ phần tử đầu tiên
                     if (chartDataLPG.length > 5) {

@@ -44,7 +44,7 @@ app.get('/api/data/fetchch4', async (req, res) => {
     const data = await collection.find({}).sort({ _id: -1 }).limit(5).toArray();
     res.json(data);
     data.reverse();
-    console.log(data);
+
   } catch (error) {
     console.error('Error fetching data:', error);
     res.status(500).send('Internal Server Error');
@@ -58,7 +58,7 @@ app.get('/api/data/fetchlpg', async (req, res) => {
     const data = await collection.find({}).sort({ _id: -1 }).limit(5).toArray();
     res.json(data);
     data.reverse();
-    console.log(data);
+
   } catch (error) {
     console.error('Error fetching data:', error);
     res.status(500).send('Internal Server Error');
@@ -67,15 +67,20 @@ app.get('/api/data/fetchlpg', async (req, res) => {
 
 app.post('/api/data', async (req, res) => {
   try {
-    const { temperature, humidity, timestamp } = req.body;
-    console.log(`Received data - Temperature: ${temperature}, Humidity: ${humidity}, Timestamp: ${timestamp}`);
-
+    const { Concern, Hour, Min, Day, Month, Year, Pin, Gas, } = req.body;
+    console.log(`Received data - Concern: ${Concern}, Hour: ${Hour}, Min: ${Min}, Day:${Day}, Month:${Month}, Year:${Year}, Pin: ${Pin}, Gas:${Gas}}`);
+    function concatenateTime(hours, minutes, days, months, years) {
+      const concatenatedTime = `${hours}:${minutes} ${days}/${months}/${years}`;
+      return concatenatedTime;
+    }
+    
     const newData = {
-      Temp: temperature,
-      Humi: humidity,
-      Timestamp: timestamp,
+      Concern: Concern,
+      Time: concatenateTime(Hour, Min, Day, Month, Year),
+      Pin: Pin,
+      Gas: Gas,
     };
-    if (newData.Humi == 0) {
+    if (newData.Gas == 0) {
       await pushdatatoch4(newData);
     } else {
       await pushdatatolpg(newData);

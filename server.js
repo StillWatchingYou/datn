@@ -41,8 +41,9 @@ app.get('/api/data/fetch', async (req, res) => {
     try {
         const database = client.db('node_test');
         const collection = database.collection('test');
-        const data =  await collection.find({}).sort({ _id: -1 }).limit(1).toArray();
+        const data =  await collection.find({}).sort({ _id: -1 }).limit(5).toArray();
         res.json(data);
+        data.reverse();
         console.log(data);
     } catch (error) {
         console.error('Error fetching data:', error);

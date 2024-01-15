@@ -21,7 +21,7 @@
                 <span id="CH4"></span>
                 <p>Đọc lần cuối tại:</p>
                 <span id="Time-CH4"></span>
-                <table id="table">
+                <table id="tableCH4">
                     <thead>
                         <tr>
                             <th>Time</th>
@@ -29,16 +29,16 @@
                             <th>humi</th>
                         </tr>
                     </thead>
-                    <tbody id="dataBody">
+                    <tbody id="dataBodyCH4">
                     </tbody>
                 </table>
                 <div class="detail">
                     <div class="text">
-                        <p style="height: 24px;font-size: 16px;"><strong>Lượng Ni tơ trong đất hiện tại:</strong> <span
-                                id="Nitrogen"></span> mg/Kg</p>
+                        <p style="height: 24px;font-size: 16px;"><strong>Chỉ số CH4</strong> <span id="Nitrogen"></span>
+                        </p>
                     </div>
                     <div class="chart">
-                        <canvas id="canvasnito"></canvas>
+                        <canvas id="canvasCH4"></canvas>
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                 <span id="LPG"></span>
                 <p>Đọc lần cuối tại:</p>
                 <span id="Time-LPG"></span>
-                <table id="table">
+                <table id="tableLPG">
                     <thead>
                         <tr>
                             <th>Time</th>
@@ -55,16 +55,16 @@
                             <th>humi</th>
                         </tr>
                     </thead>
-                    <tbody id="dataBody">
+                    <tbody id="dataBodyLPG">
                     </tbody>
                 </table>
                 <div class="detail">
                     <div class="text">
-                        <p style="height: 24px;font-size: 16px;"><strong>Lượng Ni tơ trong đất hiện tại:</strong> <span
-                                id="Nitrogen"></span> mg/Kg</p>
+                        <p style="height: 24px;font-size: 16px;"><strong>Chỉ số LPG</strong> <span id="Nitrogen"></span>
+                        </p>
                     </div>
                     <div class="chart">
-                        <canvas id="canvasnito"></canvas>
+                        <canvas id="canvasLPG"></canvas>
                     </div>
                 </div>
             </div>
@@ -76,31 +76,31 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        async function fetchData() {
+
+        let chartDataCH4 = [];
+        let chartDataLPG = [];
+
+        async function fetchDataCH4() {
             try {
                 const response = await fetch('/api/data/fetch');
                 if (!response.ok) {
                     console.log('not ok');
                     throw new Error(`Failed to fetch data. Status: ${response.status}`);
                 }
-
                 const data = await response.json();
-                const dataBody = document.getElementById('dataBody');
+                const dataBodyCH4 = document.getElementById('dataBodyCH4');
 
                 // Clear existing rows
-                dataBody.innerHTML = '';
+                dataBodyCH4.innerHTML = '';
 
                 // Keep track of displayed rows
                 let displayedRows = data.slice(-5);
-
+                // document.getElementById("LPG").innerHTML = entry.humidity;
+                document.getElementById("CH4").innerHTML = data[0].Temp;
+                // document.getElementById("Time-LPG").innerHTML = entry.timestamp
+                document.getElementById("Time-CH4").innerHTML = data[0].Timestamp;
+                // console.log(entry.timestamp);
                 displayedRows.forEach(entry => {
-                    console.log(entry.Humi);
-
-                    // document.getElementById("LPG").innerHTML = entry.humidity;
-                    document.getElementById("CH4").innerHTML = entry.Temp;
-                    // document.getElementById("Time-LPG").innerHTML = entry.timestamp
-                    document.getElementById("Time-CH4").innerHTML = entry.Timestamp;
-                    // console.log(entry.timestamp);
                     const row = document.createElement('tr');
 
                     const timeCell = document.createElement('td');
@@ -115,9 +115,18 @@
                     row.appendChild(timeCell);
                     row.appendChild(humidityCell);
                     row.appendChild(temperatureCell);
+                    chartDataCH4.unshift(entry.Temp);
 
+                    // Nếu mảng có hơn 5 phần tử, loại bỏ phần tử cuối cùng
+                    if (chartDataCH4.length > 5) {
+                        chartDataCH4.pop();
+                    }
+
+                    // Cập nhật biểu đồ
+                    myChartCH4.data.datasets[0].data = chartDataCH4;
+                    myChartCH4.update();
                     // Append new row to the top of the table
-                    dataBody.insertBefore(row, dataBody.firstChild);
+                    dataBodyCH4.appendChild(row);
                 });
             } catch (error) {
                 console.error('Error fetching data:', error.message);
@@ -125,65 +134,96 @@
         }
 
         // Fetch data every 500 milliseconds
-        setInterval(() => { fetchData() }, 500);
+        setInterval(() => { fetchDataCH4() }, 5000);
 
-
-
-        let myChartNito;
-        let chartDataNito = [];
-        let myChartPhotpho;
-        let chartDataPhotpho = [];
-
-
-        myChartNito = new Chart('canvasnito', {
-            type: 'line',
-            data: {
-                labels: [1, 2, 3, 4, 5, 6],
-                datasets: [{
-                    label: 'My Data',
-                    data: [0, 27, 10, 8, 11],
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-
-        });
-        const canvasphotpho = document.getElementById('canvasphotpho');
-        new Chart(canvasphotpho, {
-            type: 'line',
-            data: {
-                labels: [1, 2, 3, 4, 5, 6],
-                datasets: [{
-                    label: 'My Data',
-                    data: [0, 12, 19, 3, 5, 4],
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-
-        });
-
-        const ctx = document.getElementById('canvas');
-
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: 'Biểu đồ nhiệt độ',
-                    data: [12, 19, 3, 50, 4, 5],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+        async function fetchDataLPG() {
+            try {
+                const response = await fetch('/api/data/fetch');
+                if (!response.ok) {
+                    console.log('not ok');
+                    throw new Error(`Failed to fetch data. Status: ${response.status}`);
                 }
+                const data = await response.json();
+                const dataBodyLPG = document.getElementById('dataBodyLPG');
+
+                // Clear existing rows
+                dataBodyLPG.innerHTML = '';
+
+                // Keep track of displayed rows
+                let displayedRows = data.slice(-5);
+
+                // document.getElementById("LPG").innerHTML = entry.humidity;
+                document.getElementById("LPG").innerHTML = data[0].Humi;
+                // document.getElementById("Time-LPG").innerHTML = entry.timestamp
+                document.getElementById("Time-LPG").innerHTML = data[0].Timestamp;
+
+                // console.log(entry.timestamp);
+                displayedRows.forEach(entry => {
+                    const row = document.createElement('tr');
+
+                    const timeCell = document.createElement('td');
+                    timeCell.textContent = entry.Timestamp;
+
+                    const humidityCell = document.createElement('td');
+                    humidityCell.textContent = entry.Humi;
+
+                    const temperatureCell = document.createElement('td');
+                    temperatureCell.textContent = entry.Temp;
+
+                    row.appendChild(timeCell);
+                    row.appendChild(humidityCell);
+                    row.appendChild(temperatureCell);
+                    chartDataLPG.unshift(entry.Humi);
+
+                    // Nếu mảng có hơn 5 phần tử, loại bỏ phần tử đầu tiên
+                    if (chartDataLPG.length > 5) {
+                        chartDataLPG.pop();
+                    }
+
+                    myChartLPG.data.datasets[0].data = chartDataLPG;
+                    myChartLPG.update();
+                    // Append new row to the top of the table
+                    dataBodyLPG.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error.message);
             }
+        }
+
+        // Fetch data every 500 milliseconds
+        setInterval(() => { fetchDataLPG() }, 5000);
+
+
+
+
+
+        let myChartCH4 = new Chart('canvasCH4', {
+            type: 'line',
+            data: {
+                labels: [1, 2, 3, 4, 5],
+                datasets: [{
+                    label: 'My Data',
+                    data: chartDataCH4,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+
+        });
+        let myChartLPG = new Chart('canvasLPG', {
+            type: 'line',
+            data: {
+                labels: [1, 2, 3, 4, 5],
+                datasets: [{
+                    label: 'My Data',
+                    data: chartDataLPG,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+
         });
     </script>
 </body>

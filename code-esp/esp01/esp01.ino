@@ -6,7 +6,6 @@
 #include <WiFiUdp.h>
 #include <TimeLib.h>
 
-
 unsigned long previousMillis1 = 0;
 unsigned long previousMillis2 = 0;  //khai báo cờ để chạy delay trong loop
 
@@ -28,13 +27,11 @@ const long utcOffsetInSeconds = 7 * 3600;
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);  //settings hàm lấy biến thời gian
 
-
 void setup() {
   Serial.begin(9600);                        //khởi tạo serial
   wifiManager.autoConnect("AutoConnectAP");  //khởi tạo wifi AutoConnectAP để kết nối vào wifi
   timeClient.begin();                        //khởi tạo hàm lấy thời gian
 }
-
 
 void loop() {
   unsigned long currentMillis = millis();
@@ -46,7 +43,7 @@ void loop() {
 
     Serial.println(temperature);
     Serial.println(humidity);
-    Serial.println(formattedTime); 
+    Serial.println(formattedTime);
     sendDataToServer(temperature, humidity, timeClient.getEpochTime());
   }
   if (currentMillis - previousMillis2 >= 100) {  // liên tục get dữ liệu mỗi 100ms để đảm bảo thời gian đk delay max 100ms
@@ -63,7 +60,7 @@ void sendDataToServer(float Concern, float Hour, float Min, float Pin, float Gas
   char formattedTime[20];
   formatTime(timestamp, formattedTime);
 
-  String jsonData = "{\"Concern\":" + String(Concern) + ",\"Hour\":" + String(Hour) + ",\"min\":\"" + String(min) + ",\"Pin\":\"" + String(Pin) + ",\"Gas\":\"" + String(Gas)  "\"}";
+  String jsonData = "{\"Concern\":" + String(Concern) + ",\"Hour\":" + String(Hour) + ",\"min\":\"" + String(min) + ",\"Pin\":\"" + String(Pin) + ",\"Gas\":\"" + String(Gas) "\"}";
 
   WiFiClient client;
 

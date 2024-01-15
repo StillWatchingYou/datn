@@ -12,6 +12,11 @@ unsigned long previousMillis2 = 0;  //khai báo cờ để chạy delay trong lo
 
 int temperature = 0;
 int humidity = 0;
+int Concern = 0;
+int Hour = 0;
+int min = 0;
+int Pin = 0;
+int Gas = 0;
 
 const char* serverAddress = "192.168.1.5";
 const int serverPort = 3000;
@@ -39,8 +44,6 @@ void loop() {
     formatTime(timeClient.getEpochTime(), formattedTime);
     timeClient.update();
 
-    temperature++;
-    humidity++;
     Serial.println(temperature);
     Serial.println(humidity);
     Serial.println(formattedTime); 
@@ -56,11 +59,11 @@ void formatTime(unsigned long epochTime, char* buffer) {  //hàm format lại bi
   sprintf(buffer, "%02d:%02d %02d/%02d/%04d", hour(epochTime), minute(epochTime), day(epochTime), month(epochTime), year(epochTime));
 }
 
-void sendDataToServer(float temperature, float humidity, unsigned long timestamp) {  //hàm gửi dữ liệu qua http với 2 biến giả định temp và humi
+void sendDataToServer(float Concern, float Hour, float Min, float Pin, float Gas) {  //hàm gửi dữ liệu qua http với 2 biến giả định temp và humi
   char formattedTime[20];
   formatTime(timestamp, formattedTime);
 
-  String jsonData = "{\"temperature\":" + String(temperature) + ",\"humidity\":" + String(humidity) + ",\"timestamp\":\"" + String(formattedTime) + "\"}";
+  String jsonData = "{\"Concern\":" + String(Concern) + ",\"Hour\":" + String(Hour) + ",\"min\":\"" + String(min) + ",\"Pin\":\"" + String(Pin) + ",\"Gas\":\"" + String(Gas)  "\"}";
 
   WiFiClient client;
 

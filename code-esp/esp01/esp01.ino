@@ -26,8 +26,8 @@ NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);  //settings h�
 
 
 void setup() {
-  Serial.begin(9600);                        //khởi tạo serial
-  wifiManager.autoConnect("AutoConnectAP");  //khởi tạo wifi AutoConnectAP để kết nối vào wifi
+  Serial.begin(115200);                        //khởi tạo serial
+  wifiManager.startConfigPortal("AutoConnectAP");  //khởi tạo wifi AutoConnectAP để kết nối vào wifi
   timeClient.begin();                        //khởi tạo hàm lấy thời gian
 }
 
@@ -55,6 +55,7 @@ void loop() {
 
     Serial.print("Received data as String: ");
     Serial.println(receivedString);
+    sendDataToServer(receivedString);
   }
 
     // temperature = random(10, 80);
@@ -63,7 +64,6 @@ void loop() {
     // Serial.println(humidity);
     // Serial.println(formattedTime);
     // sendDataToServer(temperature, humidity, timeClient.getEpochTime());
-    sendDataToServer(receivedString);
   }
   // if (currentMillis - previousMillis2 >= 100) {  // liên tục get dữ liệu mỗi 100ms để đảm bảo thời gian đk delay max 100ms
   //   previousMillis2 = currentMillis;

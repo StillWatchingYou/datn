@@ -10,13 +10,34 @@
 </head>
 
 <body>
+
     <div>
-        <div id="bar-b">%pin</div>
-        <div id="bar-w"></div>
+        <p id="title"> THIẾT BỊ ĐO KHÍ GAS CẦM TAY </p>
+    </div>
+
+    <div id="stadard-info">
+        <div id="temp" class="tex-infor">
+            <p>Nhiệt độ hiện tại: </p>
+            <span id="temp-details"></span>
+            <p> độ C</p>
+        </div>
+        <div id="hump" class="tex-infor">
+            <p>Độ ẩm hiện tại:                </p>
+            <span id="hump-details"></span>
+            <p> %</p>
+        </div>
+        <div id="pin">
+            <div id="bar-b"><span id="pinvalue"></span><p>%</p></div>
+            <div id="total-bar">
+                
+                <div id="bar-w"></div>
+                <div id="bar-first"></div>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="row">
-            <div id="CH4-details">
+            <div id="CH4-details" class="tex-infor">
                 <p>Giá trị CH4:</p>
                 <span id="CH4"></span>
                 <p>Đọc lần cuối tại:</p>
@@ -24,8 +45,8 @@
                 <table id="tableCH4">
                     <thead>
                         <tr>
-                            <th>Time</th>
-                            <th>Value</th>
+                            <th>Thời gian</th>
+                            <th>Giá trị</th>
                         </tr>
                     </thead>
                     <tbody id="dataBodyCH4">
@@ -33,7 +54,7 @@
                 </table>
                 <div class="detail">
                     <div class="text">
-                        <p style="height: 24px;font-size: 16px;"><strong>Chỉ số CH4</strong> <span
+                        <p style="height: 24px;font-size: 24px;"><strong>Chỉ số CH4</strong> <span
                                 id="CH4-chart"></span>
                         </p>
                     </div>
@@ -42,7 +63,7 @@
                     </div>
                 </div>
             </div>
-            <div id="LPG-details">
+            <div id="LPG-details" class="tex-infor">
                 <p>Giá trị LPG:</p>
                 <span id="LPG"></span>
                 <p>Đọc lần cuối tại:</p>
@@ -50,8 +71,8 @@
                 <table id="tableLPG">
                     <thead>
                         <tr>
-                            <th>Time</th>
-                            <th>Value</th>
+                            <th>Thời gian</th>
+                            <th>Giá trị</th>
                         </tr>
                     </thead>
                     <tbody id="dataBodyLPG">
@@ -59,7 +80,7 @@
                 </table>
                 <div class="detail">
                     <div class="text">
-                        <p style="height: 24px;font-size: 16px;"><strong>Chỉ số LPG</strong> <span
+                        <p style="height: 24px;font-size: 24px;"><strong>Chỉ số LPG</strong> <span
                                 id="LPG-chart"></span>
                         </p>
                     </div>
@@ -82,6 +103,32 @@
         let chartDataCH4 = [];
         let chartDataLPG = [];
 
+        async function fetchCommonData() {
+            try {
+                const response = await fetch('/api/data/fetchcommon');
+                if (!response.ok) {
+                    console.log('not ok');
+                    throw new Error(`Failed to fetch data. Status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                document.getElementById("temp-details").innerHTML = data[0].Temp;
+                document.getElementById("hump-details").innerHTML = data[0].Hump;
+                console.log(data[0].Temp);
+
+                // console.log(entry.timestamp);
+                document.getElementById("pinvalue").innerHTML = data[0].Pin;
+                const Pin = document.getElementById('bar-b');
+                let pinwidth = data[0].Pin;
+                changeWidth(Pin, pinwidth);
+            } catch (error) {
+                console.error('Error fetching data:', error.message);
+            }
+        }
+
+        // Fetch data every 500 milliseconds
+        setInterval(() => { fetchCommonData() }, 5000);
+
         async function fetchDataCH4() {
             try {
                 const response = await fetch('/api/data/fetchch4');
@@ -102,10 +149,6 @@
                 // document.getElementById("Time-LPG").innerHTML = entry.timestamp
                 document.getElementById("Time-CH4").innerHTML = data[0].Time;
                 // console.log(entry.timestamp);
-                // const Pin = document.getElementById('bar-b');
-                // let pinwidth = data[0].Pin * 2;
-                // console.log(data[0].Pin);
-                // changeWidth(Pin, pinwidth);
                 displayedRows.forEach(entry => {
 
                     const row = document.createElement('tr');
@@ -159,10 +202,6 @@
                 document.getElementById("LPG").innerHTML = data[0].Concern;
                 // document.getElementById("Time-LPG").innerHTML = entry.timestamp
                 document.getElementById("Time-LPG").innerHTML = data[0].Time;
-                // let pinwidth = data[0].Pin * 2;
-                // console.log(data[0].Pin);
-                // changeWidth(Pin, pinwidth);
-                // console.log(entry.timestamp);
                 displayedRows.forEach(entry => {
                     const row = document.createElement('tr');
 

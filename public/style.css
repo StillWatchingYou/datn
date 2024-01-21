@@ -3,6 +3,19 @@ table {
     width: 100%;
 }
 
+img{
+    width: 30vw;
+}
+
+body {
+    background-image: url(./assets/image/5325581.jpg);
+    background-repeat: no-repeat;
+    background-position: right top;
+    background-attachment: fixed;
+    background-size: 25vw;
+    /* background-color: rgb(110, 60, 60); */
+  }
+
 th,
 td {
     border: 1px solid black;
@@ -10,61 +23,117 @@ td {
     text-align: center;
 }
 
-.dot {
-    height: 25px;
-    width: 25px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
+#title {
+    display: flex;
+    justify-content: center;
+    font-size: 40px;
+    margin-right: 300px;
 }
 
-#bar-w{
-    height: 50px;
-    width: 200px;
-    background-color: wheat;
+#pin {
+    /* margin-left: 7.5vw; */
+    margin-top: -40px;
+
 }
 
-#bar-b{
-    height: 50px;
-    width: 150px;
-    background-color: black;
-    color: white;
+#stadard-info{
+    display: flex;
+    justify-content: space-around;
+    margin-right: 300px;
+    height: 40px;
+}
+
+#temp{
+    display: flex;
+    align-items: center;
+
+}
+#temp span{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#hump{
+    display: flex;
+        align-items: center;
+
+}
+
+#hump span{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#total-bar{
+    display: flex;
+}
+
+
+#bar-first{
+    height: 13px;
+    background-color: rgb(156, 151, 151);
+    width: 10px;
+    display: flex;
+    margin-top: 13px;
+
+}
+#bar-w {
+    height: 40px;
+    width: 100px;
+    background-color: rgb(156, 151, 151);
+}
+
+#bar-b {
+    height: 40px;
+    width: 100px;
+    background-color: rgb(195, 220, 236);
+    color: black;
     position: relative;
-    top: 50px;
-    line-height: 50px;
+    top: 40px;
+    display: flex;
+    align-items:center;
+}
+
+#bar-b p {
+    line-height: 40px;
+}
+#bar-b span{
     padding-left: 20px;
 }
 
 
-.detail{
+.detail {
     width: 30vw;
     height: 35vh;
-    background-color: rgb(235, 220, 198);
+    background-color: rgb(195, 220, 236);
 }
-.text{
+
+.text {
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-color: white;
+    /* background-color: rgb(195, 220, 236); */
     width: 80%;
-    margin:  5% 10% 0 10%;
+    margin: 5% 5% 0 10%;
+    padding-top: 10px;
     height: 15%;
     border-radius: 16px;
 }
 
-.chart{
+.chart {
     display: flex;
     justify-content: center;
     height: 70%;
 }
 
-#canvas{
+#canvas {
     height: 100% !important;
 }
 
-.row{
+.row {
     width: 100vw;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    margin-right: 300px;
 }

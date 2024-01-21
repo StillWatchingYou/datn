@@ -65,25 +65,45 @@ app.get('/api/data/fetchlpg', async (req, res) => {
   }
 });
 
+app.get('/api/data/fetchcommon', async (req, res) => {
+  try {
+    const database = client.db('test2');
+    const collection = database.collection('common');
+    const data = await collection.find({}).sort({ _id: -1 }).limit(5).toArray();
+    res.json(data);
+    data.reverse();
+
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 app.post('/api/data', async (req, res) => {
   try {
-    const { Concern, Hour, Min, Day, Month, Year, Pin, Gas, } = req.body;
-    console.log(`Received data - Concern: ${Concern}, Hour: ${Hour}, Min: ${Min}, Day:${Day}, Month:${Month}, Year:${Year}, Pin: ${Pin}, Gas:${Gas}}`);
+    const { Concern, Hour, Min, Day, Month, Year, Pin, Gas, Temp, Hump } = req.body;
+    console.log(`Received data - Concern: ${Concern}, Hour: ${Hour}, Min: ${Min}, Day:${Day}, Month:${Month}, Year:${Year}, Pin: ${Pin}, Gas:${Gas}, Temp:${Temp}, Hump:${Hump}}`);
     function concatenateTime(hours, minutes, days, months, years) {
       const concatenatedTime = `${hours}:${minutes} ${days}/${months}/${years}`;
       return concatenatedTime;
     }
-    
-    const newData = {
-      Concern: Concern,
+
+    const newCommonData = {
       Time: concatenateTime(Hour, Min, Day, Month, Year),
       Pin: Pin,
+      Temp: Temp,
+      Hump: Hump
+    }
+    pushcommondata(newCommonData);
+    const newInViData = {
+      Concern: Concern,
+      Time: concatenateTime(Hour, Min, Day, Month, Year),
       Gas: Gas,
     };
-    if (newData.Gas == 0) {
-      await pushdatatoch4(newData);
+    if (newInViData.Gas == 0) {
+      await pushdatatoch4(newInViData);
     } else {
-      await pushdatatolpg(newData);
+      await pushdatatolpg(newInViData);
     }
     res.status(200).send('Data saved successfully');
   } catch (error) {
@@ -91,6 +111,17 @@ app.post('/api/data', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+async function pushcommondata(newData) {
+  try {
+    const database = client.db('test2');
+    const collection = database.collection('common');
+    await collection.insertOne(newData);
+    console.log('Data inserted:', newData);
+  } catch (error) {
+    console.error('Error pushing data to MongoDB:', error);
+  }
+}
 
 async function pushdatatoch4(newData) {
   try {

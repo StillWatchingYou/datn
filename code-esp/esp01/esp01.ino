@@ -32,16 +32,16 @@ void setup() {
 
 
 void loop() {
-  // unsigned long currentMillis = millis();
+  unsigned long currentMillis = millis();
   
-  // if (currentMillis - previousMillis1 >= 6000) {  //hàm gửi dữ liệu, chạy lại mỗi 1p
-  //   previousMillis1 = currentMillis;
+  if (currentMillis - previousMillis1 >= 6000) {  //hàm gửi dữ liệu, chạy lại mỗi 1p
+    previousMillis1 = currentMillis;
 
 
-    char formattedTime[20];
-    formatTime(timeClient.getEpochTime(), formattedTime);
-    timeClient.update();
-    Serial.println(formattedTime);
+    // char formattedTime[20];
+    // formatTime(timeClient.getEpochTime(), formattedTime);
+    // timeClient.update();
+    // Serial.println(formattedTime);
     
 
     if (Serial.available() > 0) { // Kiểm tra xem có dữ liệu nào được nhận chưa
@@ -67,7 +67,7 @@ void loop() {
     // Serial.println(humidity);
     // Serial.println(formattedTime);
     // sendDataToServer(temperature, humidity, timeClient.getEpochTime());
-  // }
+  }
   // if (currentMillis - previousMillis2 >= 100) {  // liên tục get dữ liệu mỗi 100ms để đảm bảo thời gian đk delay max 100ms
   //   previousMillis2 = currentMillis;
   //   getDataFromServer();

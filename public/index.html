@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đồ Án Tốt Nghiệp</title>
-    <link rel="icon" type="image/x-icon" href="/./public/assets/image/2210.i511.028.S.m009.c13.gas appliance flat text.jpg">
+    <link rel="icon" type="image/x-icon"
+        href="/./public/assets/image/2210.i511.028.S.m009.c13.gas appliance flat text.jpg">
     <link rel="stylesheet" href="style.css">
     <!-- <script src="script.js"></script> -->
 </head>
@@ -18,19 +19,23 @@
 
     <div id="stadard-info">
         <div id="temp" class="tex-infor">
+            <img style="height: 40px; width: 26.3px;" src="./assets/image/R.png" alt="" srcset="">
             <p>Nhiệt độ hiện tại: </p>
-            <span id="temp-details"></span>
+            <span id="temp-details" class="formatted-number"></span>
             <p> độ C</p>
         </div>
         <div id="hump" class="tex-infor">
-            <p>Độ ẩm hiện tại:                </p>
-            <span id="hump-details"></span>
+            <img style="height: 40px; width: 40px;" src="./assets/image/R.jpg" alt="" srcset="">
+            <p>Độ ẩm hiện tại: </p>
+            <span id="hump-details" class="formatted-number"></span>
             <p> %</p>
         </div>
         <div id="pin">
-            <div id="bar-b"><span id="pinvalue"></span><p>%</p></div>
+            <div id="bar-b"><span id="pinvalue"></span>
+                <p>%</p>
+            </div>
             <div id="total-bar">
-                
+
                 <div id="bar-w"></div>
                 <div id="bar-first"></div>
             </div>
@@ -39,10 +44,10 @@
     <div class="row">
         <div class="row">
             <div id="CH4-details" class="tex-infor">
-                <p>Giá trị CH4:</p>
-                <span id="CH4"></span>
-                <p>Đọc lần cuối tại:</p>
-                <span id="Time-CH4"></span>
+                <p style="font-weight: bold;" >Giá trị CH4:</p>
+                <span style="font-size: 36px;" id="CH4"></span>
+                <p style="font-weight: bold;">Đọc lần cuối tại:</p>
+                <span style="font-size: 36px;" id="Time-CH4"></span>
                 <table id="tableCH4">
                     <thead>
                         <tr>
@@ -65,10 +70,10 @@
                 </div>
             </div>
             <div id="LPG-details" class="tex-infor">
-                <p>Giá trị LPG:</p>
-                <span id="LPG"></span>
-                <p>Đọc lần cuối tại:</p>
-                <span id="Time-LPG"></span>
+                <p style="font-weight: bold;">Giá trị LPG:</p>
+                <span style="font-size: 36px;" id="LPG"></span>
+                <p style="font-weight: bold;">Đọc lần cuối tại:</p>
+                <span style="font-size: 36px;" id="Time-LPG"></span>
                 <table id="tableLPG">
                     <thead>
                         <tr>
@@ -98,11 +103,15 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
+
+
         function changeWidth(myElement, newWidth) {
             myElement.style.width = newWidth + 'px';
         }
         let chartDataCH4 = [];
+        let timedataCH4 = [];
         let chartDataLPG = [];
+        let timedataLPG = [];
 
         async function fetchCommonData() {
             try {
@@ -113,8 +122,11 @@
                 }
                 const data = await response.json();
 
-                document.getElementById("temp-details").innerHTML = data[0].Temp;
-                document.getElementById("hump-details").innerHTML = data[0].Hump;
+                let nhiet = data[0].Temp.toFixed(1);
+                let am = data[0].Hump.toFixed(1);
+                console.log(nhiet);
+                document.getElementById("temp-details").innerHTML = nhiet;
+                document.getElementById("hump-details").innerHTML = am;
                 console.log(data[0].Temp);
 
                 // console.log(entry.timestamp);
@@ -163,14 +175,17 @@
                     row.appendChild(timeCell);
                     row.appendChild(concernCell);
                     chartDataCH4.unshift(entry.Concern);
+                    timedataCH4.unshift(entry.Time);
 
                     // Nếu mảng có hơn 5 phần tử, loại bỏ phần tử cuối cùng
                     if (chartDataCH4.length > 5) {
                         chartDataCH4.pop();
+                        timedataCH4.pop();
                     }
 
                     // Cập nhật biểu đồ
                     myChartCH4.data.datasets[0].data = chartDataCH4;
+                    myChartCH4.data.labels = timedataCH4;
                     myChartCH4.update();
                     // Append new row to the top of the table
                     dataBodyCH4.appendChild(row);
@@ -215,13 +230,16 @@
                     row.appendChild(timeCell);
                     row.appendChild(concernCell);
                     chartDataLPG.unshift(entry.Concern);
+                    timedataLPG.unshift(entry.Time);
 
                     // Nếu mảng có hơn 5 phần tử, loại bỏ phần tử đầu tiên
                     if (chartDataLPG.length > 5) {
                         chartDataLPG.pop();
+                        timedataLPG.pop();
                     }
 
                     myChartLPG.data.datasets[0].data = chartDataLPG;
+                    myChartLPG.data.labels = timedataLPG
                     myChartLPG.update();
                     // Append new row to the top of the table
                     dataBodyLPG.appendChild(row);
@@ -241,7 +259,7 @@
         let myChartCH4 = new Chart('canvasCH4', {
             type: 'line',
             data: {
-                labels: [1, 2, 3, 4, 5],
+                labels: timedataCH4,
                 datasets: [{
                     label: 'My Data',
                     data: chartDataCH4,
@@ -255,7 +273,7 @@
         let myChartLPG = new Chart('canvasLPG', {
             type: 'line',
             data: {
-                labels: [1, 2, 3, 4, 5],
+                labels: timedataLPG,
                 datasets: [{
                     label: 'My Data',
                     data: chartDataLPG,

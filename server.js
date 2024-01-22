@@ -39,8 +39,8 @@ process.on('SIGINT', async () => {
 
 app.get('/api/data/fetchch4', async (req, res) => {
   try {
-    const database = client.db('test2');
-    const collection = database.collection('test-ch4');
+    const database = client.db('gas');
+    const collection = database.collection('ch4');
     const data = await collection.find({}).sort({ _id: -1 }).limit(5).toArray();
     res.json(data);
     data.reverse();
@@ -53,8 +53,8 @@ app.get('/api/data/fetchch4', async (req, res) => {
 
 app.get('/api/data/fetchlpg', async (req, res) => {
   try {
-    const database = client.db('test2');
-    const collection = database.collection('test-lpg');
+    const database = client.db('gas');
+    const collection = database.collection('lpg');
     const data = await collection.find({}).sort({ _id: -1 }).limit(5).toArray();
     res.json(data);
     data.reverse();
@@ -67,7 +67,7 @@ app.get('/api/data/fetchlpg', async (req, res) => {
 
 app.get('/api/data/fetchcommon', async (req, res) => {
   try {
-    const database = client.db('test2');
+    const database = client.db('gas');
     const collection = database.collection('common');
     const data = await collection.find({}).sort({ _id: -1 }).limit(5).toArray();
     res.json(data);
@@ -114,7 +114,7 @@ app.post('/api/data', async (req, res) => {
 
 async function pushcommondata(newData) {
   try {
-    const database = client.db('test2');
+    const database = client.db('gas');
     const collection = database.collection('common');
     await collection.insertOne(newData);
     console.log('Data inserted:', newData);
@@ -125,8 +125,8 @@ async function pushcommondata(newData) {
 
 async function pushdatatoch4(newData) {
   try {
-    const database = client.db('test2');
-    const collection = database.collection('test-ch4');
+    const database = client.db('gas');
+    const collection = database.collection('ch4');
     await collection.insertOne(newData);
     console.log('Data inserted:', newData);
   } catch (error) {
@@ -136,8 +136,8 @@ async function pushdatatoch4(newData) {
 
 async function pushdatatolpg(newData) {
   try {
-    const database = client.db('test2');
-    const collection = database.collection('test-lpg');
+    const database = client.db('gas');
+    const collection = database.collection('lpg');
     await collection.insertOne(newData);
     console.log('Data inserted:', newData);
   } catch (error) {

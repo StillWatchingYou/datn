@@ -1,0 +1,1 @@
+{"__version__":1,"totalSize":264481,"count":31,"data":{"ActivationFunctions":[1,10629],"ConvolutionFunctions":[1,145395],"FullyConnectedFunctions":[1,55643],"NNSupportFunctions":[1,32420],"PoolingFunctions":[1,13982],"SoftmaxFunctions":[1,6412]}}

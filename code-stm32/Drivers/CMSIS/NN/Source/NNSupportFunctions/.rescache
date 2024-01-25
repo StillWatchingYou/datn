@@ -1,0 +1,1 @@
+{"__version__":1,"totalSize":32420,"count":5,"data":{"arm_nntables.c":[0,15836],"arm_nn_mult_q15.c":[0,4640],"arm_nn_mult_q7.c":[0,3870],"arm_q7_to_q15_no_shift.c":[0,3792],"arm_q7_to_q15_reordered_no_shift.c":[0,4282]}}

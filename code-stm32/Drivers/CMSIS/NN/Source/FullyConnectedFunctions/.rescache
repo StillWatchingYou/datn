@@ -1,0 +1,1 @@
+{"__version__":1,"totalSize":55643,"count":6,"data":{"arm_fully_connected_mat_q7_vec_q15.c":[0,5848],"arm_fully_connected_mat_q7_vec_q15_opt.c":[0,12680],"arm_fully_connected_q15.c":[0,5598],"arm_fully_connected_q15_opt.c":[0,9848],"arm_fully_connected_q7.c":[0,5779],"arm_fully_connected_q7_opt.c":[0,15890]}}

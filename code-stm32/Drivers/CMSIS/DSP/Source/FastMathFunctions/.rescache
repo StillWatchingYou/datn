@@ -1,0 +1,1 @@
+{"__version__":1,"totalSize":25909,"count":8,"data":{"arm_cos_f32.c":[0,3538],"arm_cos_q15.c":[0,2588],"arm_cos_q31.c":[0,2600],"arm_sin_f32.c":[0,3643],"arm_sin_q15.c":[0,2384],"arm_sin_q31.c":[0,2386],"arm_sqrt_q15.c":[0,4389],"arm_sqrt_q31.c":[0,4381]}}

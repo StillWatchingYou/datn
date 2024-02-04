@@ -44,8 +44,8 @@
     <div class="row">
         <div class="row">
             <div id="CH4-details" class="tex-infor">
-                <p style="font-weight: bold;" >Giá trị LPG:</p>
-                <span style="font-size: 36px;" id="CH4"></span>
+                <p style="font-weight: bold;">Giá trị LPG:</p>
+                <span style="font-size: 36px;" id="CH4"><br></span>
                 <p style="font-weight: bold;">Đọc lần cuối tại:</p>
                 <span style="font-size: 36px;" id="Time-CH4"></span>
                 <table id="tableCH4">
@@ -141,7 +141,10 @@
 
         // Fetch data every 500 milliseconds
         setInterval(() => { fetchCommonData() }, 5000);
-
+        function convertData(entry) {
+            const convertData = `${entry} ppm`;
+            return convertData;
+        }
         async function fetchDataCH4() {
             try {
                 const response = await fetch('/api/data/fetchch4');
@@ -158,10 +161,11 @@
                 // Keep track of displayed rows
                 let displayedRows = data.slice(-5);
                 // document.getElementById("LPG").innerHTML = entry.humidity;
-                document.getElementById("CH4").innerHTML = data[0].Concern;
+                document.getElementById("CH4").innerHTML = convertData(data[0].Concern);
                 // document.getElementById("Time-LPG").innerHTML = entry.timestamp
                 document.getElementById("Time-CH4").innerHTML = data[0].Time;
                 // console.log(entry.timestamp);
+
                 displayedRows.forEach(entry => {
 
                     const row = document.createElement('tr');
@@ -170,7 +174,7 @@
                     timeCell.textContent = entry.Time;
 
                     const concernCell = document.createElement('td');
-                    concernCell.textContent = entry.Concern;
+                    concernCell.textContent = convertData(entry.Concern);
 
                     row.appendChild(timeCell);
                     row.appendChild(concernCell);
@@ -215,7 +219,7 @@
                 let displayedRows = data.slice(-5);
 
                 // document.getElementById("LPG").innerHTML = entry.humidity;
-                document.getElementById("LPG").innerHTML = data[0].Concern;
+                document.getElementById("LPG").innerHTML = convertData(data[0].Concern);
                 // document.getElementById("Time-LPG").innerHTML = entry.timestamp
                 document.getElementById("Time-LPG").innerHTML = data[0].Time;
                 displayedRows.forEach(entry => {
@@ -225,7 +229,7 @@
                     timeCell.textContent = entry.Time;
 
                     const concernCell = document.createElement('td');
-                    concernCell.textContent = entry.Concern;
+                    concernCell.textContent = convertData(entry.Concern);
 
                     row.appendChild(timeCell);
                     row.appendChild(concernCell);

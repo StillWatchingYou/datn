@@ -40,8 +40,8 @@ process.on('SIGINT', async () => {
 app.get('/api/data/fetchch4', async (req, res) => {
   try {
     const database = client.db('gas');
-    const collection = database.collection('ch4');
-    const data = await collection.find({}).sort({ _id: -1 }).limit(5).toArray();
+    const collection = database.collection('Device 1');
+    const data = await collection.find({}).sort({ _id: -1 }).limit(10).toArray();
     res.json(data);
     data.reverse();
 
@@ -54,8 +54,8 @@ app.get('/api/data/fetchch4', async (req, res) => {
 app.get('/api/data/fetchlpg', async (req, res) => {
   try {
     const database = client.db('gas');
-    const collection = database.collection('lpg');
-    const data = await collection.find({}).sort({ _id: -1 }).limit(5).toArray();
+    const collection = database.collection('Device 2');
+    const data = await collection.find({}).sort({ _id: -1 }).limit(10).toArray();
     res.json(data);
     data.reverse();
 
@@ -71,7 +71,12 @@ app.post('/api/data', async (req, res) => {
     const { ID, Value, Hour, Min, Date, Month, Year, Arlert, Temp, Hump} = req.body;
     console.log(`Received data - {ID: ${ID}; Value: ${Value}, Hour: ${Hour}, Min: ${Min}, Date:${Date}, Month:${Month}, Year:${Year}, Arlert:${Arlert}, Temp:${Temp}, Hump:${Hump}}`);
     function concatenateTime(hours, minutes, days, months, years) {
-      const concatenatedTime = `${hours}:${minutes} ${days}/${months}/${years}`;
+      const hoursStr = String(hours).padStart(2, '0');
+      const minutesStr = String(minutes).padStart(2, '0');
+      const daysStr = String(days).padStart(2, '0');
+      const monthsStr = String(months).padStart(2, '0');
+      const yearsStr = String(years).padStart(4, '20');
+      const concatenatedTime = `${hoursStr}:${minutesStr} ${daysStr}/${monthsStr}/${yearsStr}`;
       return concatenatedTime;
     }
 
@@ -83,9 +88,9 @@ app.post('/api/data', async (req, res) => {
       Hump: Hump,
       Device: ID,
     };
-    if (newInViData.ID == 1) {
+    if (newInViData.Device == 1) {
       await pushdatato1(newInViData);
-    } else if (newInViData.ID == 2){
+    } else if (newInViData.Device == 2){
       await pushdatato2(newInViData);
     }
     res.status(200).send('Data saved successfully');

@@ -25,13 +25,13 @@
                     <div id="temp" class="tex-infor">
                         <img style="height: 40px; width: 26.3px;" src="./assets/image/R.png" alt="" srcset="">
                         <p>Nhiệt độ hiện tại: </p>
-                        <span id="temp-details" class="formatted-number"></span>
+                        <span id="temp-details1" class="formatted-number"></span>
                         <p> độ C</p>
                     </div>
                     <div id="hump" class="tex-infor">
                         <img style="height: 40px; width: 40px;" src="./assets/image/R.jpg" alt="" srcset="">
                         <p>Độ ẩm hiện tại: </p>
-                        <span id="hump-details" class="formatted-number"></span>
+                        <span id="hump-details1" class="formatted-number"></span>
                         <p> %</p>
                     </div>
                 </div>
@@ -65,13 +65,13 @@
                     <div id="temp" class="tex-infor">
                         <img style="height: 40px; width: 26.3px;" src="./assets/image/R.png" alt="" srcset="">
                         <p>Nhiệt độ hiện tại: </p>
-                        <span id="temp-details" class="formatted-number"></span>
+                        <span id="temp-details2" class="formatted-number"></span>
                         <p> độ C</p>
                     </div>
                     <div id="hump" class="tex-infor">
                         <img style="height: 40px; width: 40px;" src="./assets/image/R.jpg" alt="" srcset="">
                         <p>Độ ẩm hiện tại: </p>
-                        <span id="hump-details" class="formatted-number"></span>
+                        <span id="hump-details2" class="formatted-number"></span>
                         <p> %</p>
                     </div>
                 </div>
@@ -108,16 +108,12 @@
     <script>
 
 
-        function changeWidth(myElement, newWidth) {
-            myElement.style.width = newWidth + 'px';
-        }
+
         let chartDataCH4 = [];
         let timedataCH4 = [];
         let chartDataLPG = [];
         let timedataLPG = [];
 
-        // Fetch data every 500 milliseconds
-        setInterval(() => { fetchCommonData() }, 5000);
         function convertData(entry) {
             const convertData = `${entry} ppm`;
             return convertData;
@@ -136,13 +132,13 @@
                 dataBodyCH4.innerHTML = '';
 
                 // Keep track of displayed rows
-                let displayedRows = data.slice(-5);
+                let displayedRows = data.slice(-10);
                 // document.getElementById("LPG").innerHTML = entry.humidity;
                 document.getElementById("CH4").innerHTML = convertData(data[0].Value);
                 // document.getElementById("Time-LPG").innerHTML = entry.timestamp
                 document.getElementById("Time-CH4").innerHTML = data[0].Time;
-                document.getElementById("temp-details").innerHTML = data[0].Temp;
-                document.getElementById("hump-details").innerHTML = data[0].Hump;
+                document.getElementById("temp-details1").innerHTML = data[0].Temp;
+                document.getElementById("hump-details1").innerHTML = data[0].Hump;
                 // console.log(entry.timestamp);
 
                 displayedRows.forEach(entry => {
@@ -158,10 +154,10 @@
                     row.appendChild(timeCell);
                     row.appendChild(ValueCell);
                     chartDataCH4.unshift(entry.Value);
-                    timedataCH4.unshift(entry.Time);
+                    timedataCH4.unshift(entry.Time.slice(0,5));
 
                     // Nếu mảng có hơn 5 phần tử, loại bỏ phần tử cuối cùng
-                    if (chartDataCH4.length > 5) {
+                    if (chartDataCH4.length > 10) {
                         chartDataCH4.pop();
                         timedataCH4.pop();
                     }
@@ -179,7 +175,7 @@
         }
 
         // Fetch data every 500 milliseconds
-        setInterval(() => { fetchDataCH4() }, 5000);
+        setInterval(() => { fetchDataCH4() }, 6000);
 
         async function fetchDataLPG() {
             try {
@@ -195,14 +191,15 @@
                 dataBodyLPG.innerHTML = '';
 
                 // Keep track of displayed rows
-                let displayedRows = data.slice(-5);
+                // Lấy các phần tử cuối cùng của dữ liệu và lưu vào mảng `displayedRows`
+                let displayedRows = data.slice(-10);
 
                 // document.getElementById("LPG").innerHTML = entry.humidity;
                 document.getElementById("LPG").innerHTML = convertData(data[0].Value);
                 // document.getElementById("Time-LPG").innerHTML = entry.timestamp
                 document.getElementById("Time-LPG").innerHTML = data[0].Time;
-                document.getElementById("temp-details").innerHTML = data[0].Temp;
-                document.getElementById("hump-details").innerHTML = data[0].Hump;
+                document.getElementById("temp-details2").innerHTML = data[0].Temp;
+                document.getElementById("hump-details2").innerHTML = data[0].Hump;
                 displayedRows.forEach(entry => {
                     const row = document.createElement('tr');
 
@@ -215,10 +212,10 @@
                     row.appendChild(timeCell);
                     row.appendChild(ValueCell);
                     chartDataLPG.unshift(entry.Value);
-                    timedataLPG.unshift(entry.Time);
+                    timedataLPG.unshift(entry.Time.slice(0,5));
 
                     // Nếu mảng có hơn 5 phần tử, loại bỏ phần tử đầu tiên
-                    if (chartDataLPG.length > 5) {
+                    if (chartDataLPG.length > 10) {
                         chartDataLPG.pop();
                         timedataLPG.pop();
                     }
@@ -235,7 +232,7 @@
         }
 
         // Fetch data every 500 milliseconds
-        setInterval(() => { fetchDataLPG() }, 5000);
+        setInterval(() => { fetchDataLPG() }, 6000);
 
 
 
@@ -243,6 +240,15 @@
 
         let myChartCH4 = new Chart('canvasCH4', {
             type: 'line',
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 1000,
+                        min: 0
+                    }
+                },
+            },
             data: {
                 labels: timedataCH4,
                 datasets: [{
@@ -257,6 +263,15 @@
         });
         let myChartLPG = new Chart('canvasLPG', {
             type: 'line',
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 1000,
+                        min: 0
+                    }
+                },
+            },
             data: {
                 labels: timedataLPG,
                 datasets: [{

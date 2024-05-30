@@ -81,26 +81,22 @@ app.get('/api/data/fetchcommon', async (req, res) => {
 
 app.post('/api/data', async (req, res) => {
   try {
-    const { Concern, Hour, Min, Day, Month, Year, Pin, Gas, Temp, Hump } = req.body;
-    console.log(`Received data - Concern: ${Concern}, Hour: ${Hour}, Min: ${Min}, Day:${Day}, Month:${Month}, Year:${Year}, Pin: ${Pin}, Gas:${Gas}, Temp:${Temp}, Hump:${Hump}}`);
+    const { ID, Value, Hour, Min, Date, Month, Year, Arlert, Temp, Hump} = req.body;
+    console.log(`Received data - {ID: ${ID}; Value: ${Value}, Hour: ${Hour}, Min: ${Min}, Date:${Date}, Month:${Month}, Year:${Year}, Arlert:${Arlert}, Temp:${Temp}, Hump:${Hump}}`);
     function concatenateTime(hours, minutes, days, months, years) {
       const concatenatedTime = `${hours}:${minutes} ${days}/${months}/${years}`;
       return concatenatedTime;
     }
 
-    const newCommonData = {
-      Time: concatenateTime(Hour, Min, Day, Month, Year),
-      Pin: Pin,
-      Temp: Temp,
-      Hump: Hump
-    }
-    pushcommondata(newCommonData);
     const newInViData = {
-      Concern: Concern,
-      Time: concatenateTime(Hour, Min, Day, Month, Year),
-      Gas: Gas,
+      Value: Value,
+      Time: concatenateTime(Hour, Min, Date, Month, Year),
+      Arlert: Arlert,
+      Temp: Temp,
+      Hump: Hump,
+      Device: ID,
     };
-    if (newInViData.Gas == 0) {
+    if (newInViData.ID == 1) {
       await pushdatatoch4(newInViData);
     } else {
       await pushdatatolpg(newInViData);

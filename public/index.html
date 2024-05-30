@@ -14,7 +14,7 @@
 <body>
 
     <div>
-        <p id="title"> THIẾT BỊ ĐO KHÍ GAS CẦM TAY </p>
+        <p id="title"> HỆ THỐNG QUẢN LÝ KHÍ GAS TRONG NHÀ </p>
     </div>
 
     <div id="stadard-info">
@@ -30,21 +30,11 @@
             <span id="hump-details" class="formatted-number"></span>
             <p> %</p>
         </div>
-        <div id="pin">
-            <div id="bar-b"><span id="pinvalue"></span>
-                <p>%</p>
-            </div>
-            <div id="total-bar">
-
-                <div id="bar-w"></div>
-                <div id="bar-first"></div>
-            </div>
-        </div>
     </div>
     <div class="row">
         <div class="row">
             <div id="CH4-details" class="tex-infor">
-                <p style="font-weight: bold;">Giá trị LPG:</p>
+                <p style="font-weight: bold;">Giá trị LPG phòng 1:</p>
                 <span style="font-size: 36px;" id="CH4"><br></span>
                 <p style="font-weight: bold;">Đọc lần cuối tại:</p>
                 <span style="font-size: 36px;" id="Time-CH4"></span>
@@ -60,7 +50,7 @@
                 </table>
                 <div class="detail">
                     <div class="text">
-                        <p style="height: 24px;font-size: 24px;"><strong>Chỉ số LPG</strong> <span
+                        <p style="height: 24px;font-size: 24px;"><strong>Chỉ số LPG phòng 1</strong> <span
                                 id="CH4-chart"></span>
                         </p>
                     </div>
@@ -70,7 +60,7 @@
                 </div>
             </div>
             <div id="LPG-details" class="tex-infor">
-                <p style="font-weight: bold;">Giá trị CH4:</p>
+                <p style="font-weight: bold;">Giá trị LPG phòng 2:</p>
                 <span style="font-size: 36px;" id="LPG"></span>
                 <p style="font-weight: bold;">Đọc lần cuối tại:</p>
                 <span style="font-size: 36px;" id="Time-LPG"></span>
@@ -86,7 +76,7 @@
                 </table>
                 <div class="detail">
                     <div class="text">
-                        <p style="height: 24px;font-size: 24px;"><strong>Chỉ số CH4</strong> <span
+                        <p style="height: 24px;font-size: 24px;"><strong>Chỉ số LPG phòng 2</strong> <span
                                 id="LPG-chart"></span>
                         </p>
                     </div>
@@ -108,10 +98,10 @@
         function changeWidth(myElement, newWidth) {
             myElement.style.width = newWidth + 'px';
         }
-        let chartDataCH4 = [];
-        let timedataCH4 = [];
-        let chartDataLPG = [];
-        let timedataLPG = [];
+        let chartData2 = [];
+        let timedata2 = [];
+        let chartData1 = [];
+        let timedata1 = [];
 
         async function fetchCommonData() {
             try {
@@ -265,7 +255,7 @@
             data: {
                 labels: timedataCH4,
                 datasets: [{
-                    label: 'My Data',
+                    label: 'LPG',
                     data: chartDataCH4,
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
@@ -279,7 +269,7 @@
             data: {
                 labels: timedataLPG,
                 datasets: [{
-                    label: 'My Data',
+                    label: 'LPG',
                     data: chartDataLPG,
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',

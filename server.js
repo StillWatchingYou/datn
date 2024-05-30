@@ -85,7 +85,7 @@ app.post('/api/data', async (req, res) => {
     };
     if (newInViData.ID == 1) {
       await pushdatato1(newInViData);
-    } else {
+    } else if (newInViData.ID == 2){
       await pushdatato2(newInViData);
     }
     res.status(200).send('Data saved successfully');
@@ -96,7 +96,7 @@ app.post('/api/data', async (req, res) => {
 });
 
 
-async function pushdatatoc1(newData) {
+async function pushdatato1(newData) {
   try {
     const database = client.db('gas');
     const collection = database.collection('Device 1');

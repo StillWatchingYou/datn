@@ -118,26 +118,6 @@
         let chartDataLPG = [];
         let timedataLPG = [];
 
-        async function fetchCommonData() {
-            try {
-                const response = await fetch('/api/data/fetchcommon');
-                if (!response.ok) {
-                    console.log('not ok');
-                    throw new Error(`Failed to fetch data. Status: ${response.status}`);
-                }
-                const data = await response.json();
-
-                let nhiet = data[0].Temp.toFixed(1);
-                let am = data[0].Hump.toFixed(1);
-                console.log(nhiet);
-                document.getElementById("temp-details").innerHTML = nhiet;
-                document.getElementById("hump-details").innerHTML = am;
-                console.log(data[0].Temp);
-            } catch (error) {
-                console.error('Error fetching data:', error.message);
-            }
-        }
-
         // Fetch data every 500 milliseconds
         setInterval(() => { fetchCommonData() }, 5000);
         function convertData(entry) {
@@ -163,6 +143,8 @@
                 document.getElementById("CH4").innerHTML = convertData(data[0].Value);
                 // document.getElementById("Time-LPG").innerHTML = entry.timestamp
                 document.getElementById("Time-CH4").innerHTML = data[0].Time;
+                document.getElementById("temp-details").innerHTML = data[0].Temp;
+                document.getElementById("hump-details").innerHTML = data[0].Hump;
                 // console.log(entry.timestamp);
 
                 displayedRows.forEach(entry => {
@@ -221,6 +203,8 @@
                 document.getElementById("LPG").innerHTML = convertData(data[0].Value);
                 // document.getElementById("Time-LPG").innerHTML = entry.timestamp
                 document.getElementById("Time-LPG").innerHTML = data[0].Time;
+                document.getElementById("temp-details").innerHTML = data[0].Temp;
+                document.getElementById("hump-details").innerHTML = data[0].Hump;
                 displayedRows.forEach(entry => {
                     const row = document.createElement('tr');
 

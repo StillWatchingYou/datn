@@ -65,19 +65,6 @@ app.get('/api/data/fetchlpg', async (req, res) => {
   }
 });
 
-app.get('/api/data/fetchcommon', async (req, res) => {
-  try {
-    const database = client.db('gas');
-    const collection = database.collection('common');
-    const data = await collection.find({}).sort({ _id: -1 }).limit(5).toArray();
-    res.json(data);
-    data.reverse();
-
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
 
 app.post('/api/data', async (req, res) => {
   try {
@@ -97,9 +84,9 @@ app.post('/api/data', async (req, res) => {
       Device: ID,
     };
     if (newInViData.ID == 1) {
-      await pushdatatoch4(newInViData);
+      await pushdatato1(newInViData);
     } else {
-      await pushdatatolpg(newInViData);
+      await pushdatato2(newInViData);
     }
     res.status(200).send('Data saved successfully');
   } catch (error) {
@@ -108,10 +95,11 @@ app.post('/api/data', async (req, res) => {
   }
 });
 
-async function pushcommondata(newData) {
+
+async function pushdatatoc1(newData) {
   try {
     const database = client.db('gas');
-    const collection = database.collection('common');
+    const collection = database.collection('Device 1');
     await collection.insertOne(newData);
     console.log('Data inserted:', newData);
   } catch (error) {
@@ -119,44 +107,16 @@ async function pushcommondata(newData) {
   }
 }
 
-async function pushdatatoch4(newData) {
+async function pushdatato2(newData) {
   try {
     const database = client.db('gas');
-    const collection = database.collection('ch4');
+    const collection = database.collection('Device 2');
     await collection.insertOne(newData);
     console.log('Data inserted:', newData);
   } catch (error) {
     console.error('Error pushing data to MongoDB:', error);
   }
 }
-
-async function pushdatatolpg(newData) {
-  try {
-    const database = client.db('gas');
-    const collection = database.collection('lpg');
-    await collection.insertOne(newData);
-    console.log('Data inserted:', newData);
-  } catch (error) {
-    console.error('Error pushing data to MongoDB:', error);
-  }
-}
-
-app.post('/api/control', (req, res) => {
-  try {
-    const { value } = req.body;
-    value1.shift();
-    value1.push({ value });
-    console.log('Received control value:', value);
-    res.status(200).send('Control signal received');
-  } catch (error) {
-    console.error('Error handling control signal:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-app.get('/api/control', (req, res) => {
-  res.json(value1);
-});
 
 app.get('/api/data', (req, res) => {
   res.json(dataStore);

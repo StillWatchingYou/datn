@@ -50,7 +50,7 @@
                 </table>
                 <div class="detail">
                     <div class="text">
-                        <p style="height: 24px;font-size: 24px;"><strong>Chỉ số LPG phòng 1</strong> <span
+                        <p style="height: 24px;font-size: 24px;"><strong>Chỉ số Gas phòng 1</strong> <span
                                 id="CH4-chart"></span>
                         </p>
                     </div>
@@ -76,7 +76,7 @@
                 </table>
                 <div class="detail">
                     <div class="text">
-                        <p style="height: 24px;font-size: 24px;"><strong>Chỉ số LPG phòng 2</strong> <span
+                        <p style="height: 24px;font-size: 24px;"><strong>Chỉ số Gas phòng 2</strong> <span
                                 id="LPG-chart"></span>
                         </p>
                     </div>
@@ -98,10 +98,10 @@
         function changeWidth(myElement, newWidth) {
             myElement.style.width = newWidth + 'px';
         }
-        let chartData2 = [];
-        let timedata2 = [];
-        let chartData1 = [];
-        let timedata1 = [];
+        let chartDataCH4 = [];
+        let timedataCH4 = [];
+        let chartDataLPG = [];
+        let timedataLPG = [];
 
         async function fetchCommonData() {
             try {
@@ -255,7 +255,7 @@
             data: {
                 labels: timedataCH4,
                 datasets: [{
-                    label: 'LPG',
+                    label: 'My Data',
                     data: chartDataCH4,
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
@@ -269,7 +269,7 @@
             data: {
                 labels: timedataLPG,
                 datasets: [{
-                    label: 'LPG',
+                    label: 'My Data',
                     data: chartDataLPG,
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',

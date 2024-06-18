@@ -13,14 +13,14 @@
 
 <body>
 
-    <div>
-        <p id="title"> HỆ THỐNG QUẢN LÝ KHÍ GAS TRONG NHÀ </p>
+    <div style="display: flex; align-items: center;justify-content: space-around; width: 75vw;">
+        <img style="max-height: 96px; width: auto;" src="./assets/image/Bộ toolkit logo ĐHBK Hà Nội-01 - Copy.png" alt="" srcset="">
+        <p id="title" style="margin-left: 100px;">HỆ THỐNG QUẢN LÝ KHÍ GAS TRONG NHÀ</p>
     </div>
     <div class="row">
         <div class="row">
             <div id="CH4-details" class="tex-infor">
                 <p style="font-weight: bold; font-size: 32px;">Phòng 1</p>
-                <p style="font-weight: bold;">LPG: <span style="font-size: 36px;" id="CH4"></span></p>
                 <div id="stadard-info">
                     <div id="temp" class="tex-infor">
                         <img style="height: 40px; width: 26.3px;" src="./assets/image/R.png" alt="" srcset="">
@@ -35,7 +35,8 @@
                         <p> %</p>
                     </div>
                 </div>
-                <p style="font-weight: bold;">Đọc lần cuối tại:</p>
+                <p style="font-weight: bold;font-size: 54px;">LPG: <span style="font-size: 54px;" id="CH4"></span></p>
+                <p style="font-size: 36px; font-weight: bold;">Đọc lần cuối tại:</p>
                 <span style="font-size: 48px;" id="Time-CH4"></span>
                 <div class="detail">
                     <div class="text">
@@ -50,7 +51,6 @@
             </div>
             <div id="LPG-details" class="tex-infor">
                 <p style="font-weight: bold; font-size: 32px;">Phòng 2</p>
-                <p style="font-weight: bold;">LPG: <span style="font-size: 36px;" id="LPG"></span></p>
                 <div id="stadard-info">
                     <div id="temp" class="tex-infor">
                         <img style="height: 40px; width: 26.3px;" src="./assets/image/R.png" alt="" srcset="">
@@ -65,7 +65,8 @@
                         <p> %</p>
                     </div>
                 </div>
-                <p style="font-weight: bold;">Đọc lần cuối tại:</p>
+                <p style="font-weight: bold;font-size: 54px;">LPG: <span style="font-size: 54px;" id="LPG"></span></p>
+                <p style="font-size: 36px;font-weight: bold;">Đọc lần cuối tại:</p>
                 <span style="font-size: 48px;" id="Time-LPG"></span>
                 <div class="detail">
                     <div class="text">
@@ -106,10 +107,6 @@
                     throw new Error(`Failed to fetch data. Status: ${response.status}`);
                 }
                 const data = await response.json();
-                const dataBodyCH4 = document.getElementById('dataBodyCH4');
-
-                // Clear existing rows
-                dataBodyCH4.innerHTML = '';
 
                 // Keep track of displayed rows
                 let displayedRows = data.slice(-10);
@@ -146,8 +143,6 @@
                     myChartCH4.data.datasets[0].data = chartDataCH4;
                     myChartCH4.data.labels = timedataCH4;
                     myChartCH4.update();
-                    // Append new row to the top of the table
-                    dataBodyCH4.appendChild(row);
                 });
             } catch (error) {
                 console.error('Error fetching data:', error.message);
@@ -165,10 +160,6 @@
                     throw new Error(`Failed to fetch data. Status: ${response.status}`);
                 }
                 const data = await response.json();
-                const dataBodyLPG = document.getElementById('dataBodyLPG');
-
-                // Clear existing rows
-                dataBodyLPG.innerHTML = '';
 
                 // Keep track of displayed rows
                 // Lấy các phần tử cuối cùng của dữ liệu và lưu vào mảng `displayedRows`
@@ -203,8 +194,6 @@
                     myChartLPG.data.datasets[0].data = chartDataLPG;
                     myChartLPG.data.labels = timedataLPG
                     myChartLPG.update();
-                    // Append new row to the top of the table
-                    dataBodyLPG.appendChild(row);
                 });
             } catch (error) {
                 console.error('Error fetching data:', error.message);

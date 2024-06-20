@@ -39,8 +39,8 @@ process.on('SIGINT', async () => {
 
 app.get('/api/data/fetchch4', async (req, res) => {
   try {
-    const database = client.db('gas');
-    const collection = database.collection('Device 1');
+    const database = client.db('datn');
+    const collection = database.collection('device1');
     const data = await collection.find({}).sort({ _id: -1 }).limit(10).toArray();
     res.json(data);
     data.reverse();
@@ -53,8 +53,8 @@ app.get('/api/data/fetchch4', async (req, res) => {
 
 app.get('/api/data/fetchlpg', async (req, res) => {
   try {
-    const database = client.db('gas');
-    const collection = database.collection('Device 2');
+    const database = client.db('datn');
+    const collection = database.collection('device2');
     const data = await collection.find({}).sort({ _id: -1 }).limit(10).toArray();
     res.json(data);
     data.reverse();
@@ -103,8 +103,8 @@ app.post('/api/data', async (req, res) => {
 
 async function pushdatato1(newData) {
   try {
-    const database = client.db('gas');
-    const collection = database.collection('Device 1');
+    const database = client.db('datn');
+    const collection = database.collection('device1');
     await collection.insertOne(newData);
     console.log('Data inserted:', newData);
   } catch (error) {
@@ -114,8 +114,8 @@ async function pushdatato1(newData) {
 
 async function pushdatato2(newData) {
   try {
-    const database = client.db('gas');
-    const collection = database.collection('Device 2');
+    const database = client.db('datn');
+    const collection = database.collection('device2');
     await collection.insertOne(newData);
     console.log('Data inserted:', newData);
   } catch (error) {
